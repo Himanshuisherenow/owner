@@ -10,10 +10,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'QR Generator',
+      title: 'Owner details',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('User Details'),
+          title: Text('Owner Details'),
         ),
         body: Center(
           child: QRGenerator(),
@@ -77,17 +77,20 @@ class _QRGeneratorState extends State<QRGenerator> {
           TextFormField(
             controller: _textController2,
             keyboardType: TextInputType.number,
+            maxLength: 10,
             decoration: InputDecoration(
               labelText: 'Phone number',
               hintText: 'Enter your phone number',
               border: OutlineInputBorder(),
             ),
             validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please enter your phone number';
-              }
-              return null;
-            },
+    if (value!.isEmpty) {
+      return 'Please enter your phone number';
+    } else if (value.length != 10 || !RegExp(r'^[0-9]{10}$').hasMatch(value)) {
+      return 'Please enter a valid 10 digit phone number containing only decimal digits from 0 to 9';
+    }
+    return null;
+  },
           ),
           SizedBox(height: 16),
           TextFormField(
@@ -101,6 +104,8 @@ class _QRGeneratorState extends State<QRGenerator> {
             validator: (value) {
               if (value!.isEmpty) {
                 return 'Please enter your email address';
+              } else if (!value.contains('@') || !value.contains('.com')) {
+                return 'Please enter a valid email address';
               }
               return null;
             },
